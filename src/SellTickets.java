@@ -91,7 +91,7 @@ public class SellTickets {
 		TableColumn col = pos.getTableColumn();
 
 		int value = (int) col.getCellObservableValue(item).getValue();
-		//System.out.print(Integer.toString(value));	
+		//System.out.print(value);	
 		
 
 	});
