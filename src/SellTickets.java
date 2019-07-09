@@ -78,20 +78,20 @@ public class SellTickets {
        
        bk.setOnAction((e) -> {
               window.close();
-              CinemaManagementSystem cinemaManagementSystem= new CinemaManagementSystem();
-              cinemaManagementSystem.start(window);
+              Coursework2 coursework2= new Coursework2();
+              coursework2.start(window);
         });
 
         sell.setOnAction((e) -> {
 	
-        TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);	
-        int row = pos.getRow();
-        Showing item = table.getItems().get(row);
-        
-        TableColumn col = pos.getTableColumn();
+		TablePosition pos = (TablePosition) table.getSelectionModel().getSelectedCells().get(0);	
+		int row = pos.getRow();
+		Showing item = table.getItems().get(row);
+		
+		TableColumn col = pos.getTableColumn();
 
-        String value = (String) col.getCellObservableValue(item).getValue();
-        System.out.print(value);	
+		int value = (int) col.getCellObservableValue(item).getValue();
+		//System.out.print(Integer.toString(value));	
 		
 
 	});

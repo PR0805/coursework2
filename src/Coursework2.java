@@ -10,7 +10,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class CinemaManagementSystem extends Application {
+public class Coursework2 extends Application {
     
     FlowPane flowPane;
     Scene scene;
@@ -19,9 +19,6 @@ public class CinemaManagementSystem extends Application {
     Button vst;
     Button st;
    
-    
-    
-    
     @Override
     public void start(Stage primaryStage) {
         

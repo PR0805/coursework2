@@ -73,8 +73,8 @@ public class ViewShowingTime {
        
        bk.setOnAction((e) -> {
               window.close();
-              CinemaManagementSystem cinemaManagementSystem= new CinemaManagementSystem();
-              cinemaManagementSystem.start(window);
+              Coursework2 coursework2= new Coursework2();
+              coursework2.start(window);
         });
         
         
