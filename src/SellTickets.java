@@ -14,6 +14,8 @@ import javafx.scene.control.TableColumn;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.scene.control.TablePosition;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 
 public class SellTickets {
@@ -89,9 +91,22 @@ public class SellTickets {
 		Showing item = table.getItems().get(row);
 		
 		TableColumn col = pos.getTableColumn();
+		
+		try {
 
-		int value = (int) col.getCellObservableValue(item).getValue();
-		//System.out.print(value);	
+			int value = (int) col.getCellObservableValue(item).getValue();
+			System.out.print(String.valueOf(value));
+
+		} catch (Exception ex){
+			
+			System.err.print("Error: Incorrect column selected.");
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("ERROR");
+			alert.setHeaderText("Something went wrong!\n Please select the showing ID to sell ticket.");
+			alert.setContentText("Please try again!");
+			alert.show();
+
+		}	
 		
 
 	});
