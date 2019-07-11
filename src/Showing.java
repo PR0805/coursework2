@@ -69,13 +69,16 @@ public class Showing {
     public ArrayList getshowing() {
     ArrayList<Showing> showingList = new ArrayList();
 
+    PreparedStatement preparedStmt = null;
+    Connection conn = null;
+
      try
     {
-      Connection conn = new DbConnection().establishConnection();
+      conn = new DbConnection().establishConnection();
     
       // create the java mysql update preparedstatement
       String query = "select * from Showings";
-      PreparedStatement preparedStmt = conn.prepareStatement(query);
+      preparedStmt = conn.prepareStatement(query);
 
 
       // execute the java preparedstatement
@@ -105,8 +108,63 @@ public class Showing {
 
     return showingList;
 
+    } 
+
+
+    private boolean isAvailable(){
+	
+	boolean available = false;	
+	Connection con = null;
+	PreparedStatement prepStatement = null;
+
+	String query = "select tickets_available from Showing where showing_id = ?";
+	try {
+
+		con = new DbConnection().establishConnection();
+		prepStatement = con.prepareStatement(query);
+
+		prepStatement.setInt(1, tickets);
+		ResultSet resultSet = prepStatement.executeQuery();
+
+		if (resultSet.next()){
+			
+			available = true;
+
+		}
+
+	} catch(SQLException e) {
+
+		System.err.print("Error:" + e.getMessage());
+		
+	}
+
+	return available;
+
     }
 
+ /*   public boolean sellTickets(){
+	
+	boolean available = isAvailable();
+	boolean successful = true;
+	Connection con = null;
+	PreparedStatement prepStatement = null;
+
+	String query = "update tickets_available from";
+	
+	try {
+		if (available) {
+		
+			
+
+		}
+
+	} catch(SQLException e) {
+		
+		System.err.print("Error:" + e.getMessage());
+
+	}
+
+    } */
 }
 
 
