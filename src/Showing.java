@@ -137,7 +137,7 @@ public class Showing {
 		con = new DbConnection().establishConnection();
 		prepStatement = con.prepareStatement(query);
 
-		prepStatement.setInt(1, tickets);
+		prepStatement.setInt(1, showing);
 		ResultSet resultSet = prepStatement.executeQuery();
 
 		if (resultSet.next()){
@@ -156,10 +156,10 @@ public class Showing {
 
     }
 
- /*   public boolean sellTickets(){
+  public boolean sellTickets() throws SQLException{
 	
 	boolean available = isAvailable();
-	boolean successful = true;
+	boolean successful = false;
 	Connection con = null;
 	PreparedStatement prepStatement = null;
 
@@ -168,7 +168,14 @@ public class Showing {
 	try {
 		if (available) {
 		
-			
+			con = new DbConnection().establishConnection();
+			prepStatement = con.prepareStatement(query);
+
+			prepStatement.setInt(1, tickets);
+			prepStatement.setInt(2, showing);
+
+			prepStatement.executeUpdate();
+			successful = true;
 
 		}
 
@@ -176,9 +183,24 @@ public class Showing {
 		
 		System.err.print("Error:" + e.getMessage());
 
+	} finally {
+		
+		if (prepStatement != null) {
+				
+		 	prepStatement.close();
+
+		}
+
+		if (con != null) {
+			
+			con.close();
+
+		}
 	}
 
-    } */
+	return successful;
+
+    } 
 }
 
 

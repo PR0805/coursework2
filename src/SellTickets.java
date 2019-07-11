@@ -95,7 +95,7 @@ public class SellTickets {
 		try {
 
 			int value = (int) col.getCellObservableValue(item).getValue();
-			System.out.print(value);
+			sellTicket(value);
 
 		} catch (Exception ex){
 			
@@ -148,6 +148,10 @@ public class SellTickets {
 
 		ObservableList showing= FXCollections.observableList(list);
 		return showing;
+
+	}
+
+	private void sellTicket(int value){
 
 	}
     
