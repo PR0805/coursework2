@@ -17,6 +17,8 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import java.sql.SQLException;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class SellTickets {
     
@@ -27,6 +29,8 @@ public class SellTickets {
     Button bk;
     TableView<Showing> table;
     Button sell;
+    Label quantityLabel;
+    TextField quantity;
     
     public SellTickets(){
         
@@ -37,17 +41,21 @@ public class SellTickets {
        bk = new Button("Back");
        table = new TableView<Showing>();
        sell = new Button("Sell Tickets");
+       quantity = new TextField();
+       quantityLabel = new Label("Quantity");
        
        vbox.getChildren().addAll(gridPane, table);
        vbox.setAlignment(Pos.CENTER);
-       gridPane.getChildren().addAll(bk, sell);
+       gridPane.getChildren().addAll(bk, sell, quantity, quantityLabel);
        
         gridPane.setVgap(50);
         gridPane.setHgap(20);
         gridPane.setPadding(new Insets(10,0,0,10));
        
-       GridPane.setConstraints(bk, 0, 0);
-       GridPane.setConstraints(sell, 1, 0);
+       GridPane.setConstraints(bk, 0, 1);
+       GridPane.setConstraints(sell, 1, 1);
+       GridPane.setConstraints(quantityLabel, 0, 0);
+       GridPane.setConstraints(quantity, 1, 0);
 	
 	//ShowingId column
         TableColumn<Showing, String> showingColumn = new TableColumn<>("Showing ID");
@@ -66,12 +74,16 @@ public class SellTickets {
 
 	//Room Number column
         TableColumn<Showing, String> roomColumn = new TableColumn<>("Room Number");
-        roomColumn.setMinWidth(200);
+        roomColumn.setMinWidth(300);
         roomColumn.setCellValueFactory(new PropertyValueFactory<>("room"));
+
+	TableColumn<Showing, String> ticketColumn = new TableColumn<>("Tickets available");
+        ticketColumn.setMinWidth(300);
+       	ticketColumn.setCellValueFactory(new PropertyValueFactory<>("Tickets"));
 
 
 	table.setItems(getShowing());
-        table.getColumns().addAll(showingColumn, movieColumn, datetmColumn, roomColumn);
+        table.getColumns().addAll(showingColumn, movieColumn, datetmColumn, roomColumn, ticketColumn);
 	
        
        window.setScene(scene);
@@ -95,7 +107,39 @@ public class SellTickets {
 		try {
 
 			int value = (int) col.getCellObservableValue(item).getValue();
-			sellTicket(value);
+		
+			try {
+
+				int ticketQuantity = Integer.parseInt(quantity.getText());
+				if (sellTicket(value, ticketQuantity)){
+					
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Successful");
+					alert.setHeaderText("Transaction successful");
+					alert.setContentText("Thank you!");
+					alert.show();
+
+				} else {
+					
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Operation failed");
+					alert.setHeaderText("There are not enough tickets available.");
+					alert.setContentText("We thank you for your understanding.");
+					alert.show();
+
+
+				}
+
+			} catch (NumberFormatException ex) {
+				
+				System.err.print("Error:" + ex.getMessage());
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("ERROR");
+				alert.setHeaderText("Something went wrong!\n Please enter numerical characters only for quantity.");
+				alert.setContentText("Please try again!");
+				alert.show();
+
+			}
 
 		} catch (Exception ex){
 			
@@ -134,8 +178,8 @@ public class SellTickets {
 					s.getShowing(),
 					s.getMovie(),
 					s.getDatetm(),
-					s.getRoom()
-					
+					s.getRoom(),
+					s.getTickets()
 				));
 
 			}
@@ -151,8 +195,26 @@ public class SellTickets {
 
 	}
 
-	private void sellTicket(int value){
+	private boolean sellTicket(int value, int quantity){
+		
+		boolean successful = false;
+		try {
+			
+			successful = new Showing(value, quantity).sellTickets();
+			if (successful) {
+				
+				//record ticket sales here
 
+			}
+
+		} catch (SQLException e){
+			
+			System.err.print("Error" + e.getMessage());
+
+		}
+
+	return successful;
+		
 	}
     
 }

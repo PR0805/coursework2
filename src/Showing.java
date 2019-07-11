@@ -18,11 +18,17 @@ public class Showing {
         this.tickets = 0;
     }
 
-    public Showing(int showing, String movie, String datetm, int room){
+    public Showing(int showing, String movie, String datetm, int room, int tickets){
         this.showing = showing;
         this.movie = movie;
         this.datetm = datetm;
         this.room = room;
+	this.tickets = tickets;
+    }
+
+    public Showing(int showing, int tickets){
+	this.showing = showing;
+	this.tickets = tickets;
     }
 
     public int getShowing() {
@@ -91,8 +97,8 @@ public class Showing {
 			rs.getInt("showing_id"),
 			rs.getString("movie_title"),
 			rs.getString("date_time"),
-			rs.getInt("room_number")
-			
+			rs.getInt("room_number"),
+			rs.getInt("tickets_available")
 		
 		));      
 
@@ -125,19 +131,20 @@ public class Showing {
     } 
 
 
-    private boolean isAvailable(){
+    private boolean isAvailable(int ticketQuantity){
 	
 	boolean available = false;	
 	Connection con = null;
 	PreparedStatement prepStatement = null;
 
-	String query = "select tickets_available from Showing where showing_id = ?";
+	String query = "select * from Showings where showing_id = ? and tickets_available >= ?";
 	try {
 
 		con = new DbConnection().establishConnection();
 		prepStatement = con.prepareStatement(query);
 
 		prepStatement.setInt(1, showing);
+		prepStatement.setInt(2, ticketQuantity);
 		ResultSet resultSet = prepStatement.executeQuery();
 
 		if (resultSet.next()){
@@ -158,15 +165,14 @@ public class Showing {
 
   public boolean sellTickets() throws SQLException{
 	
-	boolean available = isAvailable();
 	boolean successful = false;
 	Connection con = null;
 	PreparedStatement prepStatement = null;
 
-	String query = "update showings set tickets_available = tickets_available - ? where showing_id = ?";
+	String query = "update Showings set tickets_available = tickets_available - ? where showing_id = ?";
 	
 	try {
-		if (available) {
+		if (isAvailable(tickets)) {
 		
 			con = new DbConnection().establishConnection();
 			prepStatement = con.prepareStatement(query);
@@ -177,7 +183,7 @@ public class Showing {
 			prepStatement.executeUpdate();
 			successful = true;
 
-		}
+		} 
 
 	} catch(SQLException e) {
 		

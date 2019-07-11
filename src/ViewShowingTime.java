@@ -98,8 +98,8 @@ public class ViewShowingTime {
 				s.getShowing(),
 				s.getMovie(),
 				s.getDatetm(),
-				s.getRoom()
-				
+				s.getRoom(),
+				s.getTickets()
 			));
 
 		}
