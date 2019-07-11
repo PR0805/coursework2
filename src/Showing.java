@@ -7,6 +7,7 @@ public class Showing {
     private String movie;
     private String datetm;
     private int room;
+    private int tickets;
 
 
     public Showing(){
@@ -14,7 +15,7 @@ public class Showing {
         this.movie = "";
         this.datetm = "";
         this.room = 0;
-        
+        this.tickets = 0;
     }
 
     public Showing(int showing, String movie, String datetm, int room){
@@ -54,6 +55,14 @@ public class Showing {
 
     public void setRoom(int room) {
         this.room = room;
+    }
+    
+    public int getTickets(){ 
+	return tickets;
+    }
+
+    private void setTickets(int tickets){
+	this.tickets = tickets;
     }
 
     

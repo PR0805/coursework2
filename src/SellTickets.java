@@ -95,7 +95,7 @@ public class SellTickets {
 		try {
 
 			int value = (int) col.getCellObservableValue(item).getValue();
-			System.out.print(String.valueOf(value));
+			System.out.print(value);
 
 		} catch (Exception ex){
 			
