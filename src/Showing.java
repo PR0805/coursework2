@@ -66,47 +66,61 @@ public class Showing {
     }
 
     
-    public ArrayList getshowing() {
-    ArrayList<Showing> showingList = new ArrayList();
+    public ArrayList getshowing() throws SQLException{
+	    ArrayList<Showing> showingList = new ArrayList();
 
-    PreparedStatement preparedStmt = null;
-    Connection conn = null;
+	    PreparedStatement preparedStmt = null;
+	    Connection conn = null;
 
-     try
-    {
-      conn = new DbConnection().establishConnection();
-    
-      // create the java mysql update preparedstatement
-      String query = "select * from Showings";
-      preparedStmt = conn.prepareStatement(query);
+	     try
+	    {
+	      conn = new DbConnection().establishConnection();
+	    
+	      // create the java mysql update preparedstatement
+	      String query = "select * from Showings";
+	      preparedStmt = conn.prepareStatement(query);
 
 
-      // execute the java preparedstatement
-      ResultSet rs = preparedStmt.executeQuery();
+	      // execute the java preparedstatement
+	      ResultSet rs = preparedStmt.executeQuery();
 
-      while (rs.next()) {
-	
-	showingList.add(new Showing(
-	
-		rs.getInt("showing_id"),
-		rs.getString("movie_title"),
-		rs.getString("date_time"),
-		rs.getInt("room_number")
+	      while (rs.next()) {
 		
-	
-	));      
+		showingList.add(new Showing(
+		
+			rs.getInt("showing_id"),
+			rs.getString("movie_title"),
+			rs.getString("date_time"),
+			rs.getInt("room_number")
+			
+		
+		));      
 
-      }
-      
-      conn.close();
-    }
-    catch (Exception e)
-    {
-      System.err.println("Got an exception! ");
-      System.err.println(e.getMessage());
-    }
+	      }
+	      
+	      conn.close();
+	    }
+	    catch (Exception e)
+	    {
+	      System.err.println("Got an exception! ");
+	      System.err.println(e.getMessage());
+	    } finally {
+		
+		if (preparedStmt != null) {
+				
+		 	preparedStmt.close();
 
-    return showingList;
+		}
+
+		if (conn != null) {
+			
+			conn.close();
+
+		}
+
+	    }
+
+	    return showingList;
 
     } 
 
@@ -149,7 +163,7 @@ public class Showing {
 	Connection con = null;
 	PreparedStatement prepStatement = null;
 
-	String query = "update tickets_available from";
+	String query = "update showings set tickets_available = tickets_available - ? where showing_id = ?";
 	
 	try {
 		if (available) {

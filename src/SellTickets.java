@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-
+import java.sql.SQLException;
 
 public class SellTickets {
     
@@ -120,22 +120,35 @@ public class SellTickets {
 
 	    //Get all of the showings
         public ObservableList<Showing> getShowing(){
-	ArrayList<Showing> showingList = new Showing().getshowing();
-	List list = new ArrayList();
-  	
-	for (Showing s : showingList){
-		//String showing, String movie, DateTime datetm, int room
-		list.add(new Showing(
-			s.getShowing(),
-			s.getMovie(),
-			s.getDatetm(),
-			s.getRoom()
+		
+		ArrayList<Showing> showingList = null;
+		List list = null;
+
+		try {
+			showingList = new Showing().getshowing();
+			list = new ArrayList();
+		  	
+			for (Showing s : showingList){
+				//String showing, String movie, DateTime datetm, int room
+				list.add(new Showing(
+					s.getShowing(),
+					s.getMovie(),
+					s.getDatetm(),
+					s.getRoom()
+					
+				));
+
+			}
+
+		} catch(SQLException e){
 			
-		));
+			System.err.print("Error:" + e.getMessage());
+
+		}
+
+		ObservableList showing= FXCollections.observableList(list);
+		return showing;
 
 	}
-	ObservableList showing= FXCollections.observableList(list);
-        return showing;
-}
     
 }
