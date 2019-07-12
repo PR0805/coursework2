@@ -131,7 +131,7 @@ public class Showing {
     } 
 
 
-    private boolean isAvailable(int ticketQuantity){
+    private boolean isAvailable(int ticketQuantity) throws SQLException{
 	
 	boolean available = false;	
 	Connection con = null;
@@ -157,6 +157,20 @@ public class Showing {
 
 		System.err.print("Error:" + e.getMessage());
 		
+	} finally {
+		
+		if (prepStatement != null) {
+				
+		 	prepStatement.close();
+
+		}
+
+		if (con != null) {
+			
+			con.close();
+
+		}
+
 	}
 
 	return available;

@@ -203,7 +203,16 @@ public class SellTickets {
 			successful = new Showing(value, quantity).sellTickets();
 			if (successful) {
 				
-				//record ticket sales here
+				boolean saleRecorded = new TicketSales(value, quantity).recordSales();
+				if (saleRecorded) {
+					
+					System.out.print("Sale recorded in database");
+ 
+				} else {
+					
+					System.err.print("Error: Transaction was successful, but the sale has not been recorded.");
+
+				}
 
 			}
 
